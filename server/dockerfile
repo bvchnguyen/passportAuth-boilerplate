@@ -8,13 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci
 
 # Copy all app files to the container
 COPY . .
 
+ENV PORT=3000
+
 # Expose the port your app is running on
-EXPOSE 5000
+EXPOSE 3000
 
 # Define the command to run your app
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]

@@ -7,17 +7,15 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm install
-
 # Copy all app files to the container
 COPY . .
 
-# Build the React app for production
-RUN npm run build
+RUN npm ci
+
+ENV PORT=3002
 
 # Expose the port your app is running on
-EXPOSE 3000
+EXPOSE 3002
 
 # Define the command to run your app
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
