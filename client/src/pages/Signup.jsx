@@ -28,10 +28,10 @@ function Signup() {
         <>
         <HomeNav />
         <div className="flex flex-col pt-14 justify-center items-center">
-        <h1 className="text-5xl font-bold pb-10">Welcome!</h1>
+        {/* <h1 className="text-5xl font-bold pb-10">Welcome!</h1> */}
         <Card className="w-[400px]">
             <CardHeader className="space-y-4">
-                <CardTitle className="flex justify-center">Register</CardTitle>
+                <CardTitle className="flex justify-center font-bold">Create Your Account</CardTitle>
                 <CardDescription className="flex justify-center">Please enter your details to login</CardDescription>
             </CardHeader>
             <CardContent>
