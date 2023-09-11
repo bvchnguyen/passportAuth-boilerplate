@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import { Link, Navigate } from "react-router-dom";
 
 import { Button } from "../components/ui/button"
 import {
@@ -24,43 +25,91 @@ import {
 import HomeNav from "../components/navigation/HomeNav"
 
 function Signup() {
+
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [redirect, setRedirect] = React.useState(false);
+
+    async function handleSignUpSubmit(e){
+        e.preventDefault();
+        try{
+            const response = await axios.post('/signup', {
+                firstName,
+                lastName,
+                email,
+                password
+            });
+            alert('User Registered.');
+            setRedirect(true);
+        } catch (error){ 
+            alert('Registration Failed!');
+            console.log(error);
+        }
+    }
+
+    if (redirect) {
+        return <Navigate to="/" />
+    }
     return (
         <>
         <HomeNav />
-        <div className="flex flex-col pt-14 justify-center items-center">
+        <div className="flex flex-col pt-14 justify-center items-center overflow-y-scroll no-scrollbar">
         {/* <h1 className="text-5xl font-bold pb-10">Welcome!</h1> */}
         <Card className="w-[400px]">
-            <CardHeader className="space-y-4">
+            <CardHeader className="space-y-2">
                 <CardTitle className="flex justify-center font-bold">Create Your Account</CardTitle>
                 <CardDescription className="flex justify-center">Please enter your details to login</CardDescription>
             </CardHeader>
             <CardContent>
-                <form>
+                <form onSubmit={handleSignUpSubmit}>
                 <div className="flex flex-row items-center space-x-3 pb-4">
                     <div className="flex flex-col space-y-3 w-1/2">
                         <Label htmlFor="name">First Name</Label>
-                        <Input id="firstName" placeholder="First" />
+                        <Input 
+                            id="firstName" 
+                            placeholder="First Name" 
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            />
                     </div>
                     <div className="flex flex-col space-y-3 w-1/2">
                         <Label htmlFor="name">Last Name</Label>
-                        <Input id="lastName" placeholder="Last Name" />
+                        <Input 
+                            id="lastName" 
+                            placeholder="Last Name" 
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            />
                     </div>
                 </div>
                 <div className="grid w-full items-center gap-4">
                     <div className="flex flex-col space-y-3">
                         <Label htmlFor="name">Email</Label>
-                        <Input id="email" placeholder="email@example.com" />
+                        <Input 
+                            type="email"
+                            id="email" 
+                            placeholder="email@example.com" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            />
                     </div>
                     <div className="flex flex-col space-y-3">
                         <Label htmlFor="name">Password</Label>
-                        <Input type="password" id="password" placeholder="password" />
+                        <Input 
+                            type="password" 
+                            id="password" 
+                            placeholder="password" 
+                            onChange={(e) => setPassword(e.target.value)}
+                            />
                     </div>
+                    <p className="text-xs flex justify-center">By signing up, you agree to our Terms & Condition.</p>
+                    <Button variant="submit" size="full">Sign Up</Button>
                 </div>
                 </form>
             </CardContent>
-            <p className="text-xs flex justify-center pb-4">By signing up, you agree to our Terms & Condition.</p>
             <CardFooter className="flex flex-col justify-between space-y-3">
-                <Button variant="submit" size="full">Sign Up</Button>
                 <p className="text-sm">Already A Member? <Link>Login here!</Link></p>
             </CardFooter>
             <div class="flex items-center pl-6 pr-6 pb-1">
