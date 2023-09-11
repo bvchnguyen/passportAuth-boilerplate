@@ -1,16 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
 const passport = require('passport');
 const app = express();
-
+const session = require('express-session');
 const { db } = require('./db/db');
 const { readdirSync } = require('fs');
-
 const path = require('path');
-const flash = require('connect-flash'); 
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 
@@ -20,26 +15,20 @@ const PORT = process.env.PORT;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(cookieParser());
-
 // Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors({}))
 app.use(
     session({
-    secret: process.env.client_secret,
+    secret: process.env.server_secret,
     resave: false,
     saveUninitialized: false
   
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
-
 app.use(express.static(path.join(__dirname, 'public')));
 require('./controllers/passport')(passport);
 
